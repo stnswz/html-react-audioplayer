@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i&display=swap');
+
+html {
+    height: 100%
+}
+body {
+    margin: 0px;
+    padding: 0px;
+
+    height: 100%;
+
+    background-image:url("./images/Background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    background-color: #D0CAD0;
+
+    display:flex;
+    justify-content:center;
+    align-items: flex-start;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+
+}
+div {
+    box-sizing: border-box;
+}
