@@ -1,7 +1,7 @@
 import React, { Component, ReactElement } from "react";
 import { connect } from 'react-redux';
-import PlaylistEntry from "./PlaylistEntry";
-import WaveEffect from "./WaveEffect";
+import PlaylistEntry from "./playlistElements/PlaylistEntry";
+import WaveEffect from "./playlistElements/WaveEffect";
 import { ITrack } from "./../app/definitions/ITrack";
 import {TimeCalc} from "./../utils/TimeCalc";
 import './../css/waveeffect.css';
@@ -59,7 +59,7 @@ class Playlist extends Component<IProps, IState> {
                             <WaveEffect />
                         </div>
 
-                        <div className="listFooterRight">{TimeCalc.getCalculatedFulltime()}</div>
+                        <div className="listFooterRight">{TimeCalc.getCalculatedFulltime(this.props.tracks!)}</div>
                     
                     </div>
 

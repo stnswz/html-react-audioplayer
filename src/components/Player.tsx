@@ -1,7 +1,9 @@
 import React, { Component, ReactElement } from "react";
 import { connect } from 'react-redux';
-import './../css/rangeInput.css';
+import ButtonBar from "./playerElements/ButtonBar";
+import TimeSlider from "./playerElements/TimeSlider";
 import { ITrack } from "../app/definitions/ITrack";
+import './../css/rangeInput.css';
 
 interface IState {
     /* empty state */
@@ -22,11 +24,18 @@ const actions = (dispatch:any) => ({
 @(connect(reduxStore, actions) as any)
 class Player extends Component<IProps, IState> {
 
+    private audio:HTMLAudioElement;
+    private intervalId:any;
+
     constructor(props:IProps) {
         super(props);
         this.state = {
             
         }
+
+        this.audio = new Audio();
+        //this.audio.volume = this.state.volume/100;
+        this.intervalId = 0;
     }
 
     public render(): ReactElement {
@@ -40,23 +49,18 @@ class Player extends Component<IProps, IState> {
 
                     <div className="playerContent">
                         <div className="titleTop">{tracks[trackIndex].interpret}</div>
+
                         <div className="titleImageBox">
                             <img className="titleImage" src="./pictures/Crossroads.jpg" alt=""></img>
                         </div>
+
                         <div className="titleBottom">{tracks[trackIndex].title}</div>
-                        <div className="buttonBox">
-                            <div className="backButton"></div>
-                            <div className="playButton"></div>
-                            <div className="forwButton"></div>
-                        </div>
+
+                        <ButtonBar />
                     </div>
 
                     <div className="playerFooter">
-                        <div className="playerFooterLeft">02:42</div>
-                        <div className="playerFooterCenter">
-                            <input className="timeSlider" type="range" min="0" max="100" value="0" step="0.1" />
-                        </div>
-                        <div className="playerFooterRight">04:32</div>
+                        <TimeSlider />
                     </div>
 
                 </div> 
