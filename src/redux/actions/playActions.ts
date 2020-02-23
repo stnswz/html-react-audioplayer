@@ -2,12 +2,26 @@ import types from './types';
 import {PlayControl} from "./../../utils/PlayControl";
 import { ITrack } from '../../app/definitions/ITrack';
 
-export function setPlaying( isPlaying:boolean ) {
+export function setPlaying( play:boolean ) {
     return async (dispatch:any, getState:any) => {
+
+        let isPlaying: boolean = false;
+        const control:PlayControl = PlayControl.getInstance();
+
+        if( play ) {
+            control.play();
+            isPlaying = true;
+        }
+        else {
+            control.pause();
+            isPlaying = false;
+        }
+
         dispatch({
             type: types.SET_PLAYING,
             payload: {
-                isPlaying:isPlaying,
+                isPlaying: isPlaying,
+                isPaused: false,
             }
         });
     };
