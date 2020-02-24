@@ -4,7 +4,7 @@ import Playlist from "./components/Playlist";
 import './css/App.css';
 
 interface IState {
-    height: number,
+    /** empty */
 }
 interface IProps {
     /** empty */
@@ -17,10 +17,6 @@ class App extends Component<IProps, IState>  {
         this.state = {
             height: 0,
         }
-    }
-
-    public componentDidMount() {
-        //window.addEventListener('resize', (ev:any) => this.setState({height: window.innerHeight}) );
     }
 
     public render(): ReactElement {

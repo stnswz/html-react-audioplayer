@@ -18,24 +18,14 @@ const reduxStore = (store:any) => ({
     trackIndex: store.playState.trackIndex,
 });
 const actions = (dispatch:any) => ({
-    //loadWeatherData: (city:string) => { dispatch( loadWeatherData(city) ) },
+    
 });
 
 @(connect(reduxStore, actions) as any)
 class Player extends Component<IProps, IState> {
 
-    private audio:HTMLAudioElement;
-    private intervalId:any;
-
     constructor(props:IProps) {
         super(props);
-        this.state = {
-            
-        }
-
-        this.audio = new Audio();
-        //this.audio.volume = this.state.volume/100;
-        this.intervalId = 0;
     }
 
     public render(): ReactElement {
