@@ -12,7 +12,6 @@ interface IState {
 interface IProps {
     tracks?: Array<ITrack>,
     trackIndex?:number,
-    //loadWeatherData?: Function;
 }
 
 const reduxStore = (store:any) => ({
@@ -20,7 +19,7 @@ const reduxStore = (store:any) => ({
     trackIndex: store.playState.trackIndex,
 });
 const actions = (dispatch:any) => ({
-    //loadWeatherData: (city:string) => { dispatch( loadWeatherData(city) ) },
+
 });
 
 @(connect(reduxStore, actions) as any)
