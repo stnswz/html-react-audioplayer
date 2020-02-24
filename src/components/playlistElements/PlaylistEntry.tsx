@@ -5,7 +5,7 @@ import { ITrack } from "../../app/definitions/ITrack";
 import {TimeCalc} from "../../utils/TimeCalc";
 
 interface IState {
-    /* empty */
+    mouseOver: boolean,
 }
 interface IProps {
     index:number,
@@ -26,14 +26,28 @@ class PlaylistEntry extends Component<IProps, IState> {
 
     constructor(props:IProps) {
         super(props);
+        this.state = {
+            mouseOver: false,
+        };
+
         this.onItemClick    = this.onItemClick.bind( this );
         this.getTitleNumber = this.getTitleNumber.bind( this );
+        this.onItemOver = this.onItemOver.bind(this);
+        this.onItemOut  = this.onItemOut.bind(this);
     }
 
     private onItemClick( ev:any ) {
         if( this.props.index !== this.props.trackIndex && this.props.setTrackindex ) {
             this.props.setTrackindex( this.props.index );
         }
+    }
+
+    private onItemOver( ev:any ) {
+        this.setState({mouseOver: true});
+    }
+
+    private onItemOut( ev:any ) {
+        this.setState({mouseOver: false});
     }
 
     private getTitleNumber():string {
@@ -43,11 +57,17 @@ class PlaylistEntry extends Component<IProps, IState> {
 
     public render(): ReactElement {
 
-        const className:string = this.props.index === this.props.trackIndex ? "playlistEntryContentSelected" : "playlistEntryContent";
+        let className:string = "playlistEntryContent";
+        if( this.props.index === this.props.trackIndex ) {
+            className = "playlistEntryContentSelected";
+        }
+        else if( this.state.mouseOver ) {
+            className = "playlistEntryContentOver";
+        }
 
         return (
             <div className="playlistEntry">
-                <div className={className} onClick={this.onItemClick}>
+                <div className={className} onClick={this.onItemClick} onMouseEnter={this.onItemOver} onMouseLeave={this.onItemOut}>
                     <div className="topline">
                         <div className="toplineLeft">{this.getTitleNumber()}</div>
                         <div className="toplineCenter">{this.props.track.interpret}</div>

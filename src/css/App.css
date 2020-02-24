@@ -224,7 +224,7 @@ Playlist Content
     padding: 1px 0px 1px 3px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.playlistEntryContent, .playlistEntryContentSelected {
+.playlistEntryContent, .playlistEntryContentOver, .playlistEntryContentSelected {
     min-height: 2.824em;
     height: 100%;
     background-color: none;
@@ -232,21 +232,29 @@ Playlist Content
     padding-left: 8px;
     padding-right: 8px;
 }
-.playlistEntryContent:hover {
+.playlistEntryContent {
+    animation-name: bgColorAnimationOUT;
+    animation-duration: 0.4s;
+}
+.playlistEntryContentOver {
     background-color: rgba(255,255,255,0.1);
+    animation-name: bgColorAnimationIN;
+    animation-duration: 0.6s;
 }
 .playlistEntryContentSelected {
     background-color: rgba(255,255,255,0.15);
-    /*animation-name: bgColorAnimation;
-    animation-duration: 1s;*/
 }
-@keyframes bgColorAnimation {
+@keyframes bgColorAnimationIN {
     from {background-color: rgba(255,255,255,0);}
-    to {background-color: rgba(255,255,255,0.15);}
+    to {background-color: rgba(255,255,255,0.1);}
+}
+@keyframes bgColorAnimationOUT {
+    from {background-color: rgba(255,255,255,0.1);}
+    to {background-color: rgba(255,255,255,0);}
 }
 .topline, .bottomline {
     height: 50%;
-    padding-top: 2px;
+    padding-top: 3px;
     font-size: 0.96em;
     display:flex;
     justify-content:flex-start;
