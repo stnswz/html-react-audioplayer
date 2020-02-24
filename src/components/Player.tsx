@@ -51,7 +51,7 @@ class Player extends Component<IProps, IState> {
                         <div className="titleTop">{tracks[trackIndex].interpret}</div>
 
                         <div className="titleImageBox">
-                            <img className="titleImage" src="./pictures/Crossroads.jpg" alt=""></img>
+                            <img className="titleImage" src={tracks[trackIndex].image} alt=""></img>
                         </div>
 
                         <div className="titleBottom">{tracks[trackIndex].title}</div>
