@@ -1,21 +1,27 @@
 import types from './../actions/types/';
 import { IPlayState } from '../../app/definitions/IPlayState';
+import { playStatus } from '../../app/constants/playStatus';
 import tracks from '../../data/tracks';
 
 const initialState:IPlayState = {
-    isPlaying: false,
-    isPaused: false,
+    playStatus: playStatus.STOPPED,
+    playedTime: 0,
+    playedPercent: 0,
     trackIndex: 0,
-    tracks: tracks,
     selectedTrack: tracks[0],
+    tracks: tracks,
 }
 
 const reducer = (state:IPlayState = initialState, action:any) => {
     switch (action.type) {
         case types.SET_PLAYING:
-            return { ...state, isPlaying: action.payload.isPlaying, isPaused:action.payload.isPaused }
+            return { ...state, playStatus: action.payload.playStatus }
         case types.SET_TRACKINDEX:
-            return { ...state, trackIndex: action.payload.trackIndex, selectedTrack:action.payload.selectedTrack }
+            return { ...initialState, trackIndex: action.payload.trackIndex, selectedTrack:action.payload.selectedTrack }
+        case types.SET_PLAYTIME_UPDATE:
+            return { ...state, playedTime: action.payload.playedTime, playedPercent:action.payload.playedPercent }
+        case types.SET_PLAYING_HAS_FINISHED:
+            return { ...state, playStatus: playStatus.STOPPED, playedTime:0, playedPercent:0 }
         default:
             return state;
     }
