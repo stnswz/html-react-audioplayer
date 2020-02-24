@@ -51,7 +51,7 @@ class TimeSlider extends Component<IProps, IState> {
             <Fragment>
                 <div className="playerFooterLeft">{TimeCalc.getFormattedTime( this.props.playedTime! )}</div>
                 <div className="playerFooterCenter">
-                    <input onInput={this.onInputChange} className="timeSlider" type="range" min="0" max="100" value={this.props.playedPercent} step="0.1" />
+                    <input onChange={this.onInputChange} className="timeSlider" type="range" min="0" max="100" value={this.props.playedPercent} step="0.1" />
                 </div>
                 <div className="playerFooterRight">{TimeCalc.getFormattedTime( this.props.selectedTrack!.duration )}</div>
             </Fragment>
