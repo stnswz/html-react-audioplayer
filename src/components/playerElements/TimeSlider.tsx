@@ -35,7 +35,7 @@ class TimeSlider extends Component<IProps, IState> {
     }
 
     private onInputChange(ev:any) {
-        if(this.props.playStatus !== playStatus.PLAYING) {
+        if(this.props.playStatus === playStatus.STOPPED) {
             return;
         }
 

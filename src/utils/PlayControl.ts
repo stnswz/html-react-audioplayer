@@ -1,6 +1,7 @@
 import { IPlayState } from "../app/definitions/IPlayState";
 import { ITrack } from "./../app/definitions/ITrack";
 import { playStatus } from './../app/constants/playStatus';
+import { setPlaying } from "./../redux/actions/playActions";
 import { setPlaytimeUpdate } from "./../redux/actions/playActions";
 import { setPlayingHasFinished } from "./../redux/actions/playActions";
 import { skipForward } from "./../redux/actions/playActions";
@@ -70,22 +71,23 @@ export class PlayControl {
         const duration = this.audio.duration;
         const percent = currentTime * 100 / duration;
         this.dispatch( setPlaytimeUpdate(currentTime, percent) );
-
-        //this._timeSlider.current.playtimeUpdate( percent ); 
-        //this._display.current.playtimeUpdate( currentTime ); 
     }
 
     public timeSliderUpdate( percent:number ) {
         if( !this.audio.duration || this.audio.duration <= 0 ) {
-            //this._timeSlider.current.playtimeUpdate( 0 ); 
             return;
         }
+
+        const playState:IPlayState = this.getPlayState();
         const duration = this.audio.duration;
         const newTime = duration / 100 * percent;
         this.audio.currentTime = newTime;
 
         this.dispatch( setPlaytimeUpdate(newTime, percent) );
-        //console.log("Player: timeSliderUpdate: sliderValue="+sliderValue+", newTime="+newTime);
+
+        if( playState.playStatus === playStatus.PAUSED ) {
+            this.dispatch( setPlaying(true) );
+        }
     }
 
     public play() {
