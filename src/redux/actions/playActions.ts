@@ -1,33 +1,36 @@
 import types from './types';
 import {PlayControl} from "./../../utils/PlayControl";
 import { ITrack } from '../../app/definitions/ITrack';
+import { playStatus } from './../../app/constants/playStatus';
 
 export function setPlaying( play:boolean ) {
     return async (dispatch:any, getState:any) => {
 
-        let isPlaying: boolean = false;
+        let status: string = playStatus.STOPPED;
         const control:PlayControl = PlayControl.getInstance();
 
         if( play ) {
             control.play();
-            isPlaying = true;
+            status = playStatus.PLAYING;
         }
         else {
             control.pause();
-            isPlaying = false;
+            status = playStatus.PAUSED;
         }
 
         dispatch({
             type: types.SET_PLAYING,
             payload: {
-                isPlaying: isPlaying,
-                isPaused: false,
+                playStatus: status,
             }
         });
     };
 }
 export function setTrackindex( index:number ) {
     return async (dispatch:any, getState:any) => {
+
+        const control:PlayControl = PlayControl.getInstance();
+        control.stop();
 
         dispatch({
             type: types.SET_TRACKINDEX,
@@ -37,6 +40,7 @@ export function setTrackindex( index:number ) {
             }
         });
 
+        dispatch( setPlaying( true ) );
     };
 }
 export function skipForward() {
@@ -60,5 +64,32 @@ export function skipBackward() {
             // The current track is not the first track in the track list.
             dispatch( setTrackindex( trackIndex-1 ) );
         }
+    };
+}
+export function setPlaytimeUpdate( playedTime:number, playedPercent:number ) {
+    return async (dispatch:any, getState:any) => {
+
+        dispatch({
+            type: types.SET_PLAYTIME_UPDATE,
+            payload: {
+                playedTime: playedTime,
+                playedPercent: playedPercent,
+            }
+        });
+    };
+}
+export function setTimesliderUpdate( percent:number ) {
+    return async (dispatch:any, getState:any) => {
+
+        const control:PlayControl = PlayControl.getInstance();
+        control.timeSliderUpdate( percent );
+
+    };
+}
+export function setPlayingHasFinished() {
+    return async (dispatch:any, getState:any) => {
+        dispatch({
+            type: types.SET_PLAYING_HAS_FINISHED
+        });
     };
 }
