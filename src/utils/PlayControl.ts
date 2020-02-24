@@ -24,6 +24,7 @@ export class PlayControl {
 
     private constructor() {
         this.audio = new Audio();
+        this.audio.volume = 0.75;
         this.intervalId = 0;
         this.pauseTime  = 0;
         this.timerUpdate = this.timerUpdate.bind(this);
