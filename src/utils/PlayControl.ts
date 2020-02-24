@@ -1,5 +1,9 @@
 import { IPlayState } from "../app/definitions/IPlayState";
-import { ITrack } from "../app/definitions/ITrack";
+import { ITrack } from "./../app/definitions/ITrack";
+import { playStatus } from './../app/constants/playStatus';
+import { setPlaytimeUpdate } from "./../redux/actions/playActions";
+import { setPlayingHasFinished } from "./../redux/actions/playActions";
+import { skipForward } from "./../redux/actions/playActions";
 
 /**
  * PlayControl is a singleton class thats containing the HTMLAudioElement for
@@ -23,6 +27,7 @@ export class PlayControl {
         this.pauseTime  = 0;
         this.timerUpdate = this.timerUpdate.bind(this);
         this.audioOnEndedEvent = this.audioOnEndedEvent.bind(this);
+        this.dispatch = this.dispatch.bind(this);
 
         this.audio.onended = this.audioOnEndedEvent;
     }
@@ -38,10 +43,24 @@ export class PlayControl {
         this.store = store;
     }
 
+    private getPlayState():IPlayState {
+        return this.store.getState().playState;
+    }
+
+    private dispatch( dFunc:Function ) {
+        this.store.dispatch(dFunc);
+    }
+
     private audioOnEndedEvent(ev:any) {
-        //const curTrackIndex = this.playControlData.trackIndex;
-        //this.trackIndexChanged( curTrackIndex+1 );
-        //this.props.onTrackSkipped( this.playControlData.trackIndex );
+        const playState:IPlayState = this.getPlayState();
+        if( playState.tracks.length-1 === playState.trackIndex ) {
+            // The last track has finished playing
+            this.stop();
+            this.dispatch( setPlayingHasFinished() );
+        }
+        else {
+            this.dispatch( skipForward() );
+        }
     }
 
     private timerUpdate() {
@@ -50,43 +69,62 @@ export class PlayControl {
         const currentTime = this.audio.currentTime; 
         const duration = this.audio.duration;
         const percent = currentTime * 100 / duration;
+        this.dispatch( setPlaytimeUpdate(currentTime, percent) );
 
         //this._timeSlider.current.playtimeUpdate( percent ); 
         //this._display.current.playtimeUpdate( currentTime ); 
     }
 
-    private getPlayState():IPlayState {
-        return this.store.getState().playState;
+    public timeSliderUpdate( percent:number ) {
+        if( !this.audio.duration || this.audio.duration <= 0 ) {
+            //this._timeSlider.current.playtimeUpdate( 0 ); 
+            return;
+        }
+        const duration = this.audio.duration;
+        const newTime = duration / 100 * percent;
+        this.audio.currentTime = newTime;
+
+        this.dispatch( setPlaytimeUpdate(newTime, percent) );
+        //console.log("Player: timeSliderUpdate: sliderValue="+sliderValue+", newTime="+newTime);
     }
 
     public play() {
 
         const playState:IPlayState = this.getPlayState();
 
-        if( !playState.isPlaying ) {
+        if( playState.playStatus === playStatus.STOPPED ) {
             const track:ITrack = playState.selectedTrack;
             this.audio.src = track.src;
             this.audio.play();
+            this.intervalId = setInterval(this.timerUpdate, 50);
         }
-        else {
+        else if( playState.playStatus === playStatus.PAUSED ) {
             this.audio.play();
             this.audio.currentTime = this.pauseTime;
+            this.intervalId = setInterval(this.timerUpdate, 50);
         }
-        
-        this.intervalId = setInterval(this.timerUpdate, 50);
     }
 
     public pause() {
 
         const playState:IPlayState = this.getPlayState();
 
-        if( playState.isPlaying ) {
+        if( playState.playStatus === playStatus.PLAYING ) {
             clearInterval( this.intervalId );
             this.pauseTime = this.audio.currentTime;
             this.audio.pause();
         }
 
         //if(this.state.playState == "paused" ) this.play();
+    }
+
+    public stop() {
+        clearInterval( this.intervalId );
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.pauseTime = 0;
+        //this._timeSlider.current.playtimeUpdate( 0 );
+        //this._display.current.playtimeUpdate( 0 ); 
     }
 
 
