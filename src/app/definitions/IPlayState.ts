@@ -1,8 +1,9 @@
 import { ITrack } from "./ITrack";
 
 export interface IPlayState {
-    isPlaying: boolean,
-    isPaused: boolean,
+    playStatus: string,
+    playedTime: number,
+    playedPercent: number,
     trackIndex: number,
     tracks:Array<ITrack>,
     selectedTrack:ITrack,
