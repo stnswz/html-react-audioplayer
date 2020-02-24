@@ -5,7 +5,7 @@ import { ITrack } from "../../app/definitions/ITrack";
 import {TimeCalc} from "../../utils/TimeCalc";
 
 interface IState {
-    /* empty state */
+    /* empty */
 }
 interface IProps {
     index:number,
@@ -26,9 +26,6 @@ class PlaylistEntry extends Component<IProps, IState> {
 
     constructor(props:IProps) {
         super(props);
-        this.state = {
-            
-        }
         this.onItemClick    = this.onItemClick.bind( this );
         this.getTitleNumber = this.getTitleNumber.bind( this );
     }
