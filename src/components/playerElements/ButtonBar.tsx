@@ -3,19 +3,20 @@ import { connect } from 'react-redux';
 import { setPlaying } from "./../../redux/actions/playActions";
 import { skipForward } from "./../../redux/actions/playActions";
 import { skipBackward } from "./../../redux/actions/playActions";
+import { playStatus } from './../../app/constants/playStatus';
 
 interface IState {
     /* empty state */
 }
 interface IProps {
-    isPlaying?: boolean,
+    playStatus?: string,
     setPlaying?: Function,
     skipForward?: Function,
     skipBackward?: Function,
 }
 
 const reduxStore = (store:any) => ({
-    isPlaying: store.playState.isPlaying,
+    playStatus: store.playState.playStatus,
 });
 const actions = (dispatch:any) => ({
     setPlaying: (value:boolean) => { dispatch( setPlaying(value) ) },
@@ -33,7 +34,7 @@ class ButtonBar extends Component<IProps, IState> {
 
     private onButtonClick(ev:any) {
         if( ev.target.id === "play" && this.props.setPlaying ) {
-            this.props.setPlaying( !this.props.isPlaying );
+            this.props.setPlaying( this.props.playStatus !== playStatus.PLAYING );
         }
         else if( ev.target.id === "backward" && this.props.skipBackward ) {
             this.props.skipBackward();
@@ -45,7 +46,7 @@ class ButtonBar extends Component<IProps, IState> {
 
     public render(): ReactElement {
 
-        const playButtonName:string = this.props.isPlaying ? "pauseButton" : "playButton";
+        const playButtonName:string = this.props.playStatus === playStatus.PLAYING ? "pauseButton" : "playButton";
 
         return (
             <div className="buttonBox">

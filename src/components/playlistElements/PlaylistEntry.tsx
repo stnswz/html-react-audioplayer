@@ -54,7 +54,7 @@ class PlaylistEntry extends Component<IProps, IState> {
                     <div className="topline">
                         <div className="toplineLeft">{this.getTitleNumber()}</div>
                         <div className="toplineCenter">{this.props.track.interpret}</div>
-                        <div className="toplineRight">{TimeCalc.getDuration( this.props.track.duration )}</div>
+                        <div className="toplineRight">{TimeCalc.getFormattedTime( this.props.track.duration )}</div>
                     </div>
                     <div className="bottomline">
                         <div className="bottomlineLeft"></div>

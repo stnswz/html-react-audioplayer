@@ -1,17 +1,18 @@
 import React, { ReactElement } from "react";
 import { connect } from 'react-redux';
+import { playStatus } from './../../app/constants/playStatus';
 
 interface IProps {
-    isPlaying?:boolean,
+    playStatus?: string,
 }
 
 const reduxStore = (store:any) => ({
-    isPlaying: store.playState.isPlaying,
+    playStatus: store.playState.playStatus,
 });
 
 function WaveEffect(props:IProps): ReactElement {
 
-    const style:Object = !props.isPlaying ? {display:"none"} : {};
+    const style:Object = props.playStatus !== playStatus.PLAYING ? {display:"none"} : {};
 
     return (
         <div id="waveEffect" style={style}>
