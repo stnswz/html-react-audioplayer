@@ -217,6 +217,10 @@ Playlist Content
 
     overflow-x: hidden;
     overflow-y: auto;
+
+    /* Firefox scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.4) rgba(37,43,53,0.25);
 }
 .listEntries::-webkit-scrollbar {
     width: 0.65em;
