@@ -79,6 +79,9 @@ Player Content
 }
 .titleTop {
     margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .titleBottom {
