@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactElement, MouseEvent } from "react";
 import { connect } from 'react-redux';
 import { setTrackindex } from "../../redux/actions/playActions";
 import { ITrack } from "../../app/definitions/ITrack";
@@ -36,17 +36,17 @@ class PlaylistEntry extends Component<IProps, IState> {
         this.onItemOut  = this.onItemOut.bind(this);
     }
 
-    private onItemClick( ev:any ) {
+    private onItemClick( ev:MouseEvent ) {
         if( this.props.index !== this.props.trackIndex && this.props.setTrackindex ) {
             this.props.setTrackindex( this.props.index );
         }
     }
 
-    private onItemOver( ev:any ) {
+    private onItemOver( ev:MouseEvent ) {
         this.setState({mouseOver: true});
     }
 
-    private onItemOut( ev:any ) {
+    private onItemOut( ev:MouseEvent ) {
         this.setState({mouseOver: false});
     }
 

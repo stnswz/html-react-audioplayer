@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactElement, MouseEvent } from "react";
 import { connect } from 'react-redux';
 import { setPlaying } from "./../../redux/actions/playActions";
 import { skipForward } from "./../../redux/actions/playActions";
@@ -32,14 +32,14 @@ class ButtonBar extends Component<IProps, IState> {
         this.onButtonClick = this.onButtonClick.bind(this);
     }
 
-    private onButtonClick(ev:any) {
-        if( ev.target.id === "play" && this.props.setPlaying ) {
+    private onButtonClick(ev:MouseEvent) {
+        if( ev.currentTarget.id === "play" && this.props.setPlaying ) {
             this.props.setPlaying( this.props.playStatus !== playStatus.PLAYING );
         }
-        else if( ev.target.id === "backward" && this.props.skipBackward ) {
+        else if( ev.currentTarget.id === "backward" && this.props.skipBackward ) {
             this.props.skipBackward();
         }
-        else if( ev.target.id === "forward" && this.props.skipForward ) {
+        else if( ev.currentTarget.id === "forward" && this.props.skipForward ) {
             this.props.skipForward();
         }
     }
