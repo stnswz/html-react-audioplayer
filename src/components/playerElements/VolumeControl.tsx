@@ -1,4 +1,4 @@
-import React, { Component, ReactElement, Fragment } from "react";
+import React, { Component, ReactElement, MouseEvent, SyntheticEvent } from "react";
 import { connect } from 'react-redux';
 import { setVolume } from "./../../redux/actions/playActions";
 
@@ -35,7 +35,7 @@ class VolumeControl extends Component<IProps, IState> {
         }
     }
 
-    private onThumbClick(ev:any) {
+    private onThumbClick(ev:MouseEvent) {
         this.setState( {isOpen: !this.state.isOpen} );
     }
 
@@ -47,7 +47,7 @@ class VolumeControl extends Component<IProps, IState> {
 
         return (
             <div className={volControlClassName}>
-                <div onClick={this.onThumbClick} className={thumbClassName}></div>
+                <div onClick={this.onThumbClick} className={thumbClassName} title="volume setting"></div>
                 <div className="innerBox">
                     <div className="speaker" style={{opacity:opValue}}></div>
                     <div className="volumeSlider" >
