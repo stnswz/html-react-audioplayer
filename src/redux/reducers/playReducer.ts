@@ -7,6 +7,7 @@ const initialState:IPlayState = {
     playStatus: playStatus.STOPPED,
     playedTime: 0,
     playedPercent: 0,
+    volume: 0.75,
     trackIndex: 0,
     selectedTrack: tracks[0],
     tracks: tracks,
@@ -20,6 +21,8 @@ const reducer = (state:IPlayState = initialState, action:any) => {
             return { ...initialState, trackIndex: action.payload.trackIndex, selectedTrack:action.payload.selectedTrack }
         case types.SET_PLAYTIME_UPDATE:
             return { ...state, playedTime: action.payload.playedTime, playedPercent:action.payload.playedPercent }
+        case types.SET_VOLUME:
+            return { ...state, volume: action.payload.volume }
         case types.SET_PLAYING_HAS_FINISHED:
             return { ...state, playStatus: playStatus.STOPPED, playedTime:0, playedPercent:0 }
         default:
