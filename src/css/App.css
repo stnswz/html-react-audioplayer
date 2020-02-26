@@ -70,13 +70,10 @@ Player Content
     align-items:center;
     overflow: hidden;
 }
-
-
-
-.volumeControl {
+.volumeControl, .volumeControlIN, .volumeControlOUT {
     position: absolute;
     top: 50%;
-    right: -0px;
+    right: -34px;
     width: 34px;
     height: 160px;
     margin-top: -80px;
@@ -86,7 +83,19 @@ Player Content
     background-image:url("./images/Background-Left.jpg");
     background-repeat: no-repeat;
 }
-.volumeControl .innerBox {
+.volumeControlIN {
+    animation-name: volControlAnimationIN;
+    animation-duration: 0.35s;
+    animation-timing-function: ease-out;
+    animation-fill-mode:forwards;
+}
+.volumeControlOUT {
+    animation-name: volControlAnimationOUT;
+    animation-duration: 0.35s;
+    animation-timing-function: ease-out;
+    animation-fill-mode:forwards;
+}
+.volumeControl .innerBox, .volumeControlIN .innerBox, .volumeControlOUT .innerBox  {
     padding: 5px;
     width: 100%;
     height: 100%;
@@ -94,7 +103,7 @@ Player Content
     box-shadow: inset 2px 0px 3px 2px rgba(0,0,0,0.15);
     opacity: 1;
 }
-.openThumb {
+.openThumb, .openThumbIN, .openThumbOUT {
     position: absolute;
     width: 16px;
     height: 16px;
@@ -106,10 +115,37 @@ Player Content
     background-position: 0px 0px;
     cursor: pointer;
     opacity: 0.75;
-    /*transform: rotate(180deg);*/
 }
-.openThumb:hover {
+.openThumbIN {
+    animation-name: thumbIN;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-fill-mode:forwards;
+}
+.openThumbOUT {
+    animation-name: thumbOUT;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-out;
+    animation-fill-mode:forwards;
+}
+.openThumb:hover, .openThumbIN:hover, .openThumbOUT:hover {
     opacity: 1;
+}
+@keyframes volControlAnimationIN {
+    from {right: -34;}
+    to {right: 0;}
+}
+@keyframes volControlAnimationOUT {
+    from {right: 0;}
+    to {right: -34;}
+}
+@keyframes thumbIN {
+    from {transform: rotate(360deg);}
+    to {transform: rotate(180deg);}
+}
+@keyframes thumbOUT {
+    from {transform: rotate(180deg);}
+    to {transform: rotate(360deg);}
 }
 .speaker {
     width: 24px;
