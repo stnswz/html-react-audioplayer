@@ -2,6 +2,7 @@ import React, { Component, ReactElement } from "react";
 import { connect } from 'react-redux';
 import ButtonBar from "./playerElements/ButtonBar";
 import TimeSlider from "./playerElements/TimeSlider";
+import VolumeControl from "./playerElements/VolumeControl";
 import { ITrack } from "../app/definitions/ITrack";
 import './../css/rangeInput.css';
 
@@ -47,6 +48,7 @@ class Player extends Component<IProps, IState> {
                         <div className="titleBottom">{tracks[trackIndex].title}</div>
 
                         <ButtonBar />
+                        <VolumeControl />
                     </div>
 
                     <div className="playerFooter">

@@ -60,6 +60,7 @@ Player Content
 ****************************************/
 
 .playerContent {
+    position: relative;
     height: 100%;
     width: 100%;
     padding: 0px 8px;
@@ -69,6 +70,78 @@ Player Content
     align-items:center;
     overflow: hidden;
 }
+
+
+
+.volumeControl {
+    position: absolute;
+    top: 50%;
+    right: -0px;
+    width: 34px;
+    height: 160px;
+    margin-top: -80px;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-right: 0;
+    border-radius: 5px 0px 0px 5px;
+    background-image:url("./images/Background-Left.jpg");
+    background-repeat: no-repeat;
+}
+.volumeControl .innerBox {
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    background: rgba(37,43,53,0.4);
+    box-shadow: inset 2px 0px 3px 2px rgba(0,0,0,0.15);
+    opacity: 1;
+}
+.openThumb {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 72px;
+    left: -16px;
+    background-image:url("./images/arrowLeft.svg");
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: 0px 0px;
+    cursor: pointer;
+    opacity: 0.75;
+    /*transform: rotate(180deg);*/
+}
+.openThumb:hover {
+    opacity: 1;
+}
+.speaker {
+    width: 24px;
+    height: 24px;
+    margin-top: 5px;
+    margin-left: 5px;
+    background-image:url("./images/speakerFilled.svg");
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    background-position: 0px 0px;
+    opacity: 0.7;
+}
+.volumeSlider {
+    transform: rotate(-90deg);
+    /*transform-origin: top left;*/
+    transform-origin: 50% 48px;
+    width: 100px;
+    height: 6px;
+    margin-top: 13px;
+}
+.volumeSlider > input[type=range]::-webkit-slider-thumb {
+    width: 20px;
+    opacity: 0.75;
+}
+.volumeSlider > input[type=range]::-moz-range-thumb {
+    width: 20px;
+    opacity: 0.75;
+}
+
+
+
+
 .titleTop, .titleBottom {
     font-size: 1.125em;
     height: 25%;
