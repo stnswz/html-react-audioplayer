@@ -26,6 +26,7 @@ class VolumeControl extends Component<IProps, IState> {
             isOpen: false,
         }
         this.onInputChange = this.onInputChange.bind(this);
+        this.onThumbClick = this.onThumbClick.bind(this);
     }
 
     private onInputChange(ev:any) {
@@ -40,11 +41,15 @@ class VolumeControl extends Component<IProps, IState> {
 
     public render(): ReactElement {
 
+        const volControlClassName:string = this.state.isOpen ? "volumeControlIN" : "volumeControlOUT";
+        const thumbClassName:string = this.state.isOpen ? "openThumbIN" : "openThumbOUT";
+        const opValue = 0.2 + (this.props.volume!/2);
+
         return (
-            <div className="volumeControl">
-                <div onClick={this.onThumbClick} className="openThumb"></div>
+            <div className={volControlClassName}>
+                <div onClick={this.onThumbClick} className={thumbClassName}></div>
                 <div className="innerBox">
-                    <div className="speaker"></div>
+                    <div className="speaker" style={{opacity:opValue}}></div>
                     <div className="volumeSlider" >
                         <input onChange={this.onInputChange} type="range" min="0" max="1" value={this.props.volume} step="0.01" />
                     </div>
@@ -52,16 +57,6 @@ class VolumeControl extends Component<IProps, IState> {
             </div>
         );
     }
-
-    /*
-            <Fragment>
-                <div className="playerFooterLeft">{TimeCalc.getFormattedTime( this.props.playedTime! )}</div>
-                <div className="playerFooterCenter">
-                    <input onChange={this.onInputChange} className="timeSlider" type="range" min="0" max="100" value={this.props.playedPercent} step="0.1" />
-                </div>
-                <div className="playerFooterRight">{TimeCalc.getFormattedTime( this.props.selectedTrack!.duration )}</div>
-            </Fragment>
-    */
 }
 
 export default VolumeControl;
