@@ -24,7 +24,6 @@ export class PlayControl {
 
     private constructor() {
         this.audio = new Audio();
-        this.audio.volume = 0.75;
         this.intervalId = 0;
         this.pauseTime  = 0;
         this.timerUpdate = this.timerUpdate.bind(this);
@@ -43,6 +42,7 @@ export class PlayControl {
 
     public setStore( store:any ) {
         this.store = store;
+        this.audio.volume = store.getState().playState.volume;
     }
 
     private getPlayState():IPlayState {
@@ -91,8 +91,11 @@ export class PlayControl {
         }
     }
 
-    public play() {
+    public setVolume( vol:number ) {
+        this.audio.volume = vol;
+    }
 
+    public play() {
         const playState:IPlayState = this.getPlayState();
 
         if( playState.playStatus === playStatus.STOPPED ) {
@@ -109,7 +112,6 @@ export class PlayControl {
     }
 
     public pause() {
-
         const playState:IPlayState = this.getPlayState();
 
         if( playState.playStatus === playStatus.PLAYING ) {
@@ -117,8 +119,6 @@ export class PlayControl {
             this.pauseTime = this.audio.currentTime;
             this.audio.pause();
         }
-
-        //if(this.state.playState == "paused" ) this.play();
     }
 
     public stop() {
@@ -126,14 +126,6 @@ export class PlayControl {
         this.audio.pause();
         this.audio.currentTime = 0;
         this.pauseTime = 0;
-        //this._timeSlider.current.playtimeUpdate( 0 );
-        //this._display.current.playtimeUpdate( 0 ); 
     }
-
-
-    /*public getStore():any {
-        // dispatch / getState().playState
-        return this.store;
-    }*/
 
 }

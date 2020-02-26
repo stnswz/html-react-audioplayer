@@ -26,6 +26,19 @@ export function setPlaying( play:boolean ) {
         });
     };
 }
+export function setVolume( vol:number ) {
+    return async (dispatch:any, getState:any) => {
+        const control:PlayControl = PlayControl.getInstance();
+        control.setVolume( vol );
+
+        dispatch({
+            type: types.SET_VOLUME,
+            payload: {
+                volume: vol,
+            }
+        });
+    }
+}
 export function setTrackindex( index:number ) {
     return async (dispatch:any, getState:any) => {
 
