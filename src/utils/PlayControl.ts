@@ -8,8 +8,8 @@ import { skipForward } from "./../redux/actions/playActions";
 
 /**
  * PlayControl is a singleton class thats containing the HTMLAudioElement for
- * playing and controling the audio within the player. PlayControl can get imported 
- * everywhere to get access to it. It also has access to the redux store, for
+ * playing and controlling the audio within the player. PlayControl can get imported 
+ * everywhere to have access to it. It also has access to the redux store, for
  * getting neccessary data from the store and for dispatching events.
  */
 export class PlayControl {
