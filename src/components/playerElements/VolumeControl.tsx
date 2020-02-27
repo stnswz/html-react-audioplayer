@@ -3,11 +3,17 @@ import { connect } from 'react-redux';
 import { setVolume } from "./../../redux/actions/playActions";
 
 interface IState {
-    isOpen:boolean,
+    openState:OpenState,
 }
 interface IProps {
     volume?: number,
     setVolume?: Function,
+}
+
+enum OpenState {
+    unset,
+    closed,
+    open,
 }
 
 const reduxStore = (store:any) => ({
@@ -23,7 +29,7 @@ class VolumeControl extends Component<IProps, IState> {
     constructor(props:IProps) {
         super(props);
         this.state = {
-            isOpen: false,
+            openState: OpenState.unset,
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.onThumbClick = this.onThumbClick.bind(this);
@@ -36,13 +42,24 @@ class VolumeControl extends Component<IProps, IState> {
     }
 
     private onThumbClick(ev:MouseEvent) {
-        this.setState( {isOpen: !this.state.isOpen} );
+        const openState = this.state.openState;
+        this.setState( {openState: (openState === OpenState.unset || openState === OpenState.closed) ? OpenState.open : OpenState.closed} );
     }
 
     public render(): ReactElement {
+        
+        let volControlClassName:string = "volumeControl";
+        let thumbClassName:string = "openThumb";
 
-        const volControlClassName:string = this.state.isOpen ? "volumeControlIN" : "volumeControlOUT";
-        const thumbClassName:string = this.state.isOpen ? "openThumbIN" : "openThumbOUT";
+        if(this.state.openState === OpenState.closed) {
+            volControlClassName = "volumeControlOUT";
+            thumbClassName = "openThumbOUT";
+        }
+        if(this.state.openState === OpenState.open) {
+            volControlClassName = "volumeControlIN";
+            thumbClassName = "openThumbIN";
+        }
+
         const opValue = 0.2 + (this.props.volume!/2);
 
         return (
