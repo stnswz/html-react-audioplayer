@@ -1,5 +1,6 @@
 import React, { Component, ReactElement } from "react";
 import { connect } from 'react-redux';
+import TitleImage from "./playerElements/TitleImage";
 import ButtonBar from "./playerElements/ButtonBar";
 import TimeSlider from "./playerElements/TimeSlider";
 import VolumeControl from "./playerElements/VolumeControl";
@@ -41,9 +42,7 @@ class Player extends Component<IProps, IState> {
                     <div className="playerContent">
                         <div className="titleTop">{tracks[trackIndex].interpret}</div>
 
-                        <div className="titleImageBox">
-                            <img className="titleImage" src={tracks[trackIndex].image} alt=""></img>
-                        </div>
+                        <TitleImage />
 
                         <div className="titleBottom">{tracks[trackIndex].title}</div>
 
