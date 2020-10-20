@@ -1,18 +1,12 @@
 import React, { ReactElement } from "react";
-import { connect } from 'react-redux';
-import { playStatus } from './../../app/constants/playStatus';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store/index'
+import { playStatus as playStatusConst } from './../../app/constants/playStatus';
 
-interface IProps {
-    playStatus?: string,
-}
+function WaveEffect(): ReactElement {
 
-const reduxStore = (store:any) => ({
-    playStatus: store.playState.playStatus,
-});
-
-function WaveEffect(props:IProps): ReactElement {
-
-    const style:Object = props.playStatus !== playStatus.PLAYING ? {display:"none"} : {};
+    const playStatus: string = useSelector( (state: IRootState) => state.playState.playStatus)
+    const style:Object = playStatus !== playStatusConst.PLAYING ? {display:"none"} : {}
 
     return (
         <div id="waveEffect" style={style}>
@@ -47,4 +41,4 @@ function WaveEffect(props:IProps): ReactElement {
 
 }
 
-export default connect(reduxStore, null)(WaveEffect);
+export default WaveEffect

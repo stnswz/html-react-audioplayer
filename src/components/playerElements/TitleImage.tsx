@@ -1,69 +1,45 @@
-import React, { Component, ReactElement } from "react";
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store/index'
 import { ITrack } from "../../app/definitions/ITrack";
 
-interface IState {
-    imagesLoaded:boolean,
-}
-interface IProps {
-    tracks?: Array<ITrack>,
-    trackIndex?:number,
-}
+function TitleImage() {
 
-const reduxStore = (store:any) => ({
-    tracks: store.playState.tracks,
-    trackIndex: store.playState.trackIndex,
-});
+    const [imagesLoaded, setImagesLoaded] = useState(false)
+    const tracks: Array<ITrack> = useSelector((state: IRootState) => state.playState.tracks)
+    const trackIndex: number = useSelector((state: IRootState) => state.playState.trackIndex)
+    const count = useRef(0)
 
-@(connect(reduxStore, null) as any)
-class TitleImage extends Component<IProps, IState> {
-
-    private count:number;
-
-    constructor(props:IProps) {
-        super(props);
-        this.count = 0;
-        this.state = {
-            imagesLoaded: false,
-        }
-        this.imageLoadListener = this.imageLoadListener.bind( this );
-    }
-
-    public componentDidMount() {
-        const tracks = this.props.tracks || [];
+    useEffect(() => {
         for( let i=0; i<tracks.length; i++ ) {
             const img:HTMLImageElement = new Image();
-            img.addEventListener('load', this.imageLoadListener);
-            img.addEventListener('error', this.imageLoadListener);
-            img.src = tracks[i].image;
+            img.addEventListener('load', imageLoadListener)
+            img.addEventListener('error', imageLoadListener)
+            img.src = tracks[i].image
         };
-    }
+    // eslint-disable-next-line 
+    }, []);
 
-    private imageLoadListener( ev:any ) {
-        this.count++;
+    function imageLoadListener( ev:any ) {
+        const curCount = count.current + 1
+        count.current = curCount
+
         const img:HTMLImageElement = ev.target;
-        img.removeEventListener('load', this.imageLoadListener);
-        img.removeEventListener('error', this.imageLoadListener);
+        img.removeEventListener('load', imageLoadListener)
+        img.removeEventListener('error', imageLoadListener)
 
-        const tracks = this.props.tracks || [];
-        if( tracks.length === this.count ) {
-            this.setState( {imagesLoaded: true});
+        if( tracks.length === curCount ) {
+            setImagesLoaded(true)
         }
     }
-
-    public render(): ReactElement {
-        const tracks = this.props.tracks || [];
-
-        return (
-            <div className="titleImageBox">
-                {
-                    this.state.imagesLoaded ? 
-                        <img className="titleImage" src={tracks[this.props.trackIndex!].image} alt=""></img> : 
-                        <div className="loadingText">Loading...</div>
-                }
-            </div>
-        );
-    }
+    return (
+        <div className="titleImageBox">
+            {
+                imagesLoaded ? 
+                <img className="titleImage" src={tracks[trackIndex].image} alt=""></img> : 
+                <div className="loadingText">Loading...</div>
+            }
+        </div>
+    );
 }
-
-export default TitleImage;
+export default TitleImage

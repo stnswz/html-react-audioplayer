@@ -1,86 +1,63 @@
-import React, { Component, ReactElement, MouseEvent } from "react";
-import { connect } from 'react-redux';
+import React, { useState, MouseEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootState } from '../../redux/store/index'
 import { setTrackindex } from "../../redux/actions/playActions";
 import { ITrack } from "../../app/definitions/ITrack";
 import {TimeCalc} from "../../utils/TimeCalc";
 
-interface IState {
-    mouseOver: boolean,
-}
 interface IProps {
-    index:number,
-    track:ITrack,
-    trackIndex?: number,
-    setTrackindex?: Function,
+  index: number,
+  track: ITrack
 }
 
-const reduxStore = (store:any) => ({
-    trackIndex: store.playState.trackIndex,
-});
-const actions = (dispatch:any) => ({
-    setTrackindex: (index:number) => { dispatch( setTrackindex(index) ) },
-});
+function PlaylistEntry(props: IProps) {
 
-@(connect(reduxStore, actions) as any)
-class PlaylistEntry extends Component<IProps, IState> {
+    const [mouseOver, setMouseOver] = useState(false)
+    const trackIndex: number = useSelector((state: IRootState) => state.playState.trackIndex)
+    const dispatch: Function = useDispatch()
 
-    constructor(props:IProps) {
-        super(props);
-        this.state = {
-            mouseOver: false,
-        };
-
-        this.onItemClick    = this.onItemClick.bind( this );
-        this.getTitleNumber = this.getTitleNumber.bind( this );
-        this.onItemOver = this.onItemOver.bind(this);
-        this.onItemOut  = this.onItemOut.bind(this);
-    }
-
-    private onItemClick( ev:MouseEvent ) {
-        if( this.props.index !== this.props.trackIndex && this.props.setTrackindex ) {
-            this.props.setTrackindex( this.props.index );
+    const onItemClick = (ev:MouseEvent) => {
+        if( props.index !== trackIndex ) {
+            dispatch( setTrackindex(props.index) ) 
         }
     }
 
-    private onItemOver( ev:MouseEvent ) {
-        this.setState({mouseOver: true});
+    function onItemOver(ev:MouseEvent) {
+        setMouseOver(true);
     }
 
-    private onItemOut( ev:MouseEvent ) {
-        this.setState({mouseOver: false});
+    function onItemOut(ev:MouseEvent) {
+        setMouseOver(false);
     }
 
-    private getTitleNumber():string {
-        const idx:number = this.props.index+1;
-        return idx < 10 ? "0"+idx : "" + idx;
+    function getTitleNumber():string {
+        const idx: number = props.index + 1
+        return idx < 10 ? "0"+idx : "" + idx
     }
 
-    public render(): ReactElement {
+    let className:string = "playlistEntryContent"
+    if( props.index === trackIndex ) {
+        className = "playlistEntryContentSelected"
+    }
+    else if( mouseOver ) {
+        className = "playlistEntryContentOver"
+    }
 
-        let className:string = "playlistEntryContent";
-        if( this.props.index === this.props.trackIndex ) {
-            className = "playlistEntryContentSelected";
-        }
-        else if( this.state.mouseOver ) {
-            className = "playlistEntryContentOver";
-        }
-
-        return (
-            <div className="playlistEntry">
-                <div className={className} onClick={this.onItemClick} onMouseEnter={this.onItemOver} onMouseLeave={this.onItemOut}>
-                    <div className="topline">
-                        <div className="toplineLeft">{this.getTitleNumber()}</div>
-                        <div className="toplineCenter">{this.props.track.interpret}</div>
-                        <div className="toplineRight">{TimeCalc.getFormattedTime( this.props.track.duration )}</div>
-                    </div>
-                    <div className="bottomline">
-                        <div className="bottomlineLeft"></div>
-                        <div className="bottomlineRight">{this.props.track.title}</div>
-                    </div>
+    return (
+        <div className="playlistEntry">
+            <div className={className} onClick={onItemClick} onMouseEnter={onItemOver} onMouseLeave={onItemOut}>
+                <div className="topline">
+                    <div className="toplineLeft">{getTitleNumber()}</div>
+                    <div className="toplineCenter">{props.track.interpret}</div>
+                    <div className="toplineRight">{TimeCalc.getFormattedTime( props.track.duration )}</div>
+                </div>
+                <div className="bottomline">
+                    <div className="bottomlineLeft"></div>
+                    <div className="bottomlineRight">{props.track.title}</div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    )
 }
 
-export default PlaylistEntry;
+export default PlaylistEntry

@@ -1,14 +1,7 @@
-import React, { Component, ReactElement, MouseEvent, SyntheticEvent } from "react";
-import { connect } from 'react-redux';
+import React, { useState, MouseEvent } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { IRootState } from '../../redux/store/index'
 import { setVolume } from "./../../redux/actions/playActions";
-
-interface IState {
-    openState:OpenState,
-}
-interface IProps {
-    volume?: number,
-    setVolume?: Function,
-}
 
 enum OpenState {
     unset,
@@ -16,64 +9,46 @@ enum OpenState {
     open,
 }
 
-const reduxStore = (store:any) => ({
-    volume: store.playState.volume,
-});
-const actions = (dispatch:any) => ({
-    setVolume: (vol:number) => { dispatch( setVolume(vol) ) },
-});
+function VolumeControl() {
 
-@(connect(reduxStore, actions) as any)
-class VolumeControl extends Component<IProps, IState> {
+    const [openState, setOpenState] = useState<OpenState>(OpenState.unset);
+    const volume: number = useSelector((state: IRootState) => state.playState.volume)
+    const dispatch: Function = useDispatch()
 
-    constructor(props:IProps) {
-        super(props);
-        this.state = {
-            openState: OpenState.unset,
-        }
-        this.onInputChange = this.onInputChange.bind(this);
-        this.onThumbClick = this.onThumbClick.bind(this);
+    const onInputChange = (ev:any) => {
+        dispatch(setVolume(ev.target.value))
     }
 
-    private onInputChange(ev:any) {
-        if( this.props.setVolume ) {
-            this.props.setVolume( ev.target.value );
-        }
+    function onThumbClick(ev:MouseEvent) {
+        const curOpenState =  (openState === OpenState.unset || openState === OpenState.closed) ? OpenState.open : OpenState.closed
+        setOpenState(curOpenState)
     }
 
-    private onThumbClick(ev:MouseEvent) {
-        const openState = this.state.openState;
-        this.setState( {openState: (openState === OpenState.unset || openState === OpenState.closed) ? OpenState.open : OpenState.closed} );
+    let volControlClassName:string = "volumeControl"
+    let thumbClassName:string = "openThumb"
+
+    if(openState === OpenState.closed) {
+        volControlClassName = "volumeControlOUT"
+        thumbClassName = "openThumbOUT"
+    }
+    else if(openState === OpenState.open) {
+        volControlClassName = "volumeControlIN"
+        thumbClassName = "openThumbIN"
     }
 
-    public render(): ReactElement {
-        
-        let volControlClassName:string = "volumeControl";
-        let thumbClassName:string = "openThumb";
+    const opValue = 0.2 + (volume/2)
 
-        if(this.state.openState === OpenState.closed) {
-            volControlClassName = "volumeControlOUT";
-            thumbClassName = "openThumbOUT";
-        }
-        if(this.state.openState === OpenState.open) {
-            volControlClassName = "volumeControlIN";
-            thumbClassName = "openThumbIN";
-        }
-
-        const opValue = 0.2 + (this.props.volume!/2);
-
-        return (
-            <div className={volControlClassName}>
-                <div onClick={this.onThumbClick} className={thumbClassName} title="volume setting"></div>
-                <div className="innerBox">
-                    <div className="speaker" style={{opacity:opValue}}></div>
-                    <div className="volumeSlider" >
-                        <input onChange={this.onInputChange} type="range" min="0" max="1" value={this.props.volume} step="0.01" />
-                    </div>
+    return (
+        <div className={volControlClassName}>
+            <div onClick={onThumbClick} className={thumbClassName} title="volume setting"></div>
+            <div className="innerBox">
+                <div className="speaker" style={{opacity:opValue}}></div>
+                <div className="volumeSlider" >
+                    <input onChange={onInputChange} type="range" min="0" max="1" value={volume} step="0.01" />
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
-export default VolumeControl;
+export default VolumeControl

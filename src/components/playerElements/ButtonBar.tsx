@@ -1,61 +1,36 @@
-import React, { Component, ReactElement, MouseEvent } from "react";
-import { connect } from 'react-redux';
+import React, { MouseEvent } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { IRootState } from '../../redux/store/index'
 import { setPlaying } from "./../../redux/actions/playActions";
 import { skipForward } from "./../../redux/actions/playActions";
 import { skipBackward } from "./../../redux/actions/playActions";
-import { playStatus } from './../../app/constants/playStatus';
+import { playStatus as playStatusConst } from './../../app/constants/playStatus';
 
-interface IState {
-    /* empty state */
-}
-interface IProps {
-    playStatus?: string,
-    setPlaying?: Function,
-    skipForward?: Function,
-    skipBackward?: Function,
-}
+function ButtonBar() {
 
-const reduxStore = (store:any) => ({
-    playStatus: store.playState.playStatus,
-});
-const actions = (dispatch:any) => ({
-    setPlaying: (value:boolean) => { dispatch( setPlaying(value) ) },
-    skipForward: () => { dispatch( skipForward() ) },
-    skipBackward: () => { dispatch( skipBackward() ) },
-});
+    const playStatus: string = useSelector((state: IRootState) => state.playState.playStatus)
+    const playButtonName: string = playStatus === playStatusConst.PLAYING ? "pauseButton" : "playButton"
+    const dispatch: Function = useDispatch()
 
-@(connect(reduxStore, actions) as any)
-class ButtonBar extends Component<IProps, IState> {
-
-    constructor(props:IProps) {
-        super(props);
-        this.onButtonClick = this.onButtonClick.bind(this);
-    }
-
-    private onButtonClick(ev:MouseEvent) {
-        if( ev.currentTarget.id === "play" && this.props.setPlaying ) {
-            this.props.setPlaying( this.props.playStatus !== playStatus.PLAYING );
+    const onButtonClick = (ev:MouseEvent) => {
+        if(ev.currentTarget.id === "play") {
+            dispatch(setPlaying(playStatus !== playStatusConst.PLAYING))
         }
-        else if( ev.currentTarget.id === "backward" && this.props.skipBackward ) {
-            this.props.skipBackward();
+        else if(ev.currentTarget.id === "backward") {
+            dispatch(skipBackward())
         }
-        else if( ev.currentTarget.id === "forward" && this.props.skipForward ) {
-            this.props.skipForward();
+        else if(ev.currentTarget.id === "forward") {
+            dispatch(skipForward())
         }
     }
 
-    public render(): ReactElement {
-
-        const playButtonName:string = this.props.playStatus === playStatus.PLAYING ? "pauseButton" : "playButton";
-
-        return (
-            <div className="buttonBox">
-                <div className="backButton" id="backward" onClick={this.onButtonClick}></div>
-                <div className={playButtonName} id="play" onClick={this.onButtonClick}></div>
-                <div className="forwButton" id="forward" onClick={this.onButtonClick}></div>
-            </div>
-        );
-    }
+    return (
+        <div className="buttonBox">
+            <div className="backButton" id="backward" onClick={onButtonClick}></div>
+            <div className={playButtonName} id="play" onClick={onButtonClick}></div>
+            <div className="forwButton" id="forward" onClick={onButtonClick}></div>
+        </div>
+    );
 }
 
-export default ButtonBar;
+export default ButtonBar

@@ -1,63 +1,35 @@
-import React, { Component, ReactElement } from "react";
-import { connect } from 'react-redux';
+import React from "react";
+import { useSelector } from 'react-redux';
 import TitleImage from "./playerElements/TitleImage";
 import ButtonBar from "./playerElements/ButtonBar";
 import TimeSlider from "./playerElements/TimeSlider";
 import VolumeControl from "./playerElements/VolumeControl";
+import { IRootState } from '../redux/store/index'
 import { ITrack } from "../app/definitions/ITrack";
 import './../css/rangeInput.css';
 
-interface IState {
-    /* empty state */
-}
-interface IProps {
-    tracks?: Array<ITrack>,
-    trackIndex?:number,
-}
+function Player() {
 
-const reduxStore = (store:any) => ({
-    tracks: store.playState.tracks,
-    trackIndex: store.playState.trackIndex,
-});
-const actions = (dispatch:any) => ({
-    
-});
+    const tracks: Array<ITrack> = useSelector((state: IRootState) => state.playState.tracks)
+    const trackIndex: number = useSelector((state: IRootState) => state.playState.trackIndex)
 
-@(connect(reduxStore, actions) as any)
-class Player extends Component<IProps, IState> {
+    return (
+        <div id="player">
+            <div className="inner">
+                <div className="playerContent">
+                    <div className="titleTop">{tracks[trackIndex].interpret}</div>
+                    <TitleImage />
+                    <div className="titleBottom">{tracks[trackIndex].title}</div>
+                    <ButtonBar />
+                    <VolumeControl />
+                </div>
 
-    constructor(props:IProps) {
-        super(props);
-    }
-
-    public render(): ReactElement {
-
-        const tracks:Array<ITrack> = this.props.tracks || [];
-        const trackIndex:number    = this.props.trackIndex!;
-
-        return (
-            <div id="player">
-                <div className="inner">
-
-                    <div className="playerContent">
-                        <div className="titleTop">{tracks[trackIndex].interpret}</div>
-
-                        <TitleImage />
-
-                        <div className="titleBottom">{tracks[trackIndex].title}</div>
-
-                        <ButtonBar />
-                        <VolumeControl />
-                    </div>
-
-                    <div className="playerFooter">
-                        <TimeSlider />
-                    </div>
-
-                </div> 
+                <div className="playerFooter">
+                    <TimeSlider />
+                </div>
             </div> 
-        );
-    }
+        </div> 
+    )
 }
 
-export default Player;
+export default Player
