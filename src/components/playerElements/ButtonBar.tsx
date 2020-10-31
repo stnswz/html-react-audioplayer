@@ -26,9 +26,9 @@ function ButtonBar() {
 
     return (
         <div className="buttonBox">
-            <div className="backButton" id="backward" onClick={onButtonClick}></div>
-            <div className={playButtonName} id="play" onClick={onButtonClick}></div>
-            <div className="forwButton" id="forward" onClick={onButtonClick}></div>
+            <button className="backButton" id="backward" onClick={onButtonClick}></button>
+            <button className={playButtonName} id="play" onClick={onButtonClick}></button>
+            <button className="forwButton" id="forward" onClick={onButtonClick}></button>
         </div>
     );
 }

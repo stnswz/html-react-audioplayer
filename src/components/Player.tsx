@@ -17,7 +17,7 @@ function Player() {
         <div id="player">
             <div className="inner">
                 <div className="playerContent">
-                    <div className="titleTop">{tracks[trackIndex].interpret}</div>
+                    <h1 className="titleTop">{tracks[trackIndex].interpret}</h1>
                     <TitleImage />
                     <div className="titleBottom">{tracks[trackIndex].title}</div>
                     <ButtonBar />

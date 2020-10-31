@@ -17,9 +17,9 @@ function Playlist() {
     return (
         <div id="playlist">
             <div className="inner">
-                <div className="listEntries">
+                <ul className="listEntries">
                     { tracks.map( (track, index) => <PlaylistEntry key={track.id} index={index} track={track} /> ) }
-                </div> 
+                </ul> 
 
                 <div className="listFooterBorder"></div>
 

@@ -44,7 +44,7 @@ function PlaylistEntry(props: IProps) {
     }
 
     return (
-        <div className="playlistEntry">
+        <li className="playlistEntry">
             <div className={className} onClick={onItemClick} onMouseEnter={onItemOver} onMouseLeave={onItemOut}>
                 <div className="topline">
                     <div className="toplineLeft">{getTitleNumber()}</div>
@@ -56,7 +56,7 @@ function PlaylistEntry(props: IProps) {
                     <div className="bottomlineRight">{props.track.title}</div>
                 </div>
             </div>
-        </div>
+        </li>
     )
 }
 
